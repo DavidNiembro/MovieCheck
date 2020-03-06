@@ -9,23 +9,22 @@ using MovieCheck.Models;
 
 namespace MovieCheck.Controllers
 {
-    public class MoviesController : Controller
+    public class UsersController : Controller
     {
         private readonly moviefanContext _context;
 
-        public MoviesController(moviefanContext context)
+        public UsersController(moviefanContext context)
         {
             _context = context;
         }
 
-        // GET: Movies
+        // GET: Users
         public async Task<IActionResult> Index()
         {
-            var moviefanContext = _context.Movies.Include(m => m.Category).Include(m => m.Rating);
-            return View(await moviefanContext.ToListAsync());
+            return View(await _context.Users.ToListAsync());
         }
 
-        // GET: Movies/Details/5
+        // GET: Users/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,45 +32,39 @@ namespace MovieCheck.Controllers
                 return NotFound();
             }
 
-            var movies = await _context.Movies
-                .Include(m => m.Category)
-                .Include(m => m.Rating)
+            var users = await _context.Users
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (movies == null)
+            if (users == null)
             {
                 return NotFound();
             }
 
-            return View(movies);
+            return View(users);
         }
 
-        // GET: Movies/Create
+        // GET: Users/Create
         public IActionResult Create()
         {
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name");
-            ViewData["RatingId"] = new SelectList(_context.Ratings, "Id", "Name");
             return View();
         }
 
-        // POST: Movies/Create
+        // POST: Users/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Release,Picture,Synopsis,CategoryId,RatingId")] Movies movies)
+        public async Task<IActionResult> Create([Bind("Id,Firstname,Lastname,IsAdmin")] Users users)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(movies);
+                _context.Add(users);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", movies.CategoryId);
-            ViewData["RatingId"] = new SelectList(_context.Ratings, "Id", "Name", movies.RatingId);
-            return View(movies);
+            return View(users);
         }
 
-        // GET: Movies/Edit/5
+        // GET: Users/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -79,25 +72,22 @@ namespace MovieCheck.Controllers
                 return NotFound();
             }
 
-            var movies = await _context.Movies.FindAsync(id);
-            if (movies == null)
+            var users = await _context.Users.FindAsync(id);
+            if (users == null)
             {
                 return NotFound();
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", movies.CategoryId);
-            ViewData["RatingId"] = new SelectList(_context.Ratings, "Id", "Name", movies.RatingId);
-            TempData["Name"] = "Test data";
-            return View(movies);
+            return View(users);
         }
 
-        // POST: Movies/Edit/5
+        // POST: Users/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Release,Picture,Synopsis,CategoryId,RatingId")] Movies movies)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Firstname,Lastname,IsAdmin")] Users users)
         {
-            if (id != movies.Id)
+            if (id != users.Id)
             {
                 return NotFound();
             }
@@ -106,12 +96,12 @@ namespace MovieCheck.Controllers
             {
                 try
                 {
-                    _context.Update(movies);
+                    _context.Update(users);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!MoviesExists(movies.Id))
+                    if (!UsersExists(users.Id))
                     {
                         return NotFound();
                     }
@@ -122,12 +112,10 @@ namespace MovieCheck.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", movies.CategoryId);
-            ViewData["RatingId"] = new SelectList(_context.Ratings, "Id", "Name", movies.RatingId);
-            return View(movies);
+            return View(users);
         }
 
-        // GET: Movies/Delete/5
+        // GET: Users/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -135,32 +123,30 @@ namespace MovieCheck.Controllers
                 return NotFound();
             }
 
-            var movies = await _context.Movies
-                .Include(m => m.Category)
-                .Include(m => m.Rating)
+            var users = await _context.Users
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (movies == null)
+            if (users == null)
             {
                 return NotFound();
             }
 
-            return View(movies);
+            return View(users);
         }
 
-        // POST: Movies/Delete/5
+        // POST: Users/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var movies = await _context.Movies.FindAsync(id);
-            _context.Movies.Remove(movies);
+            var users = await _context.Users.FindAsync(id);
+            _context.Users.Remove(users);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool MoviesExists(int id)
+        private bool UsersExists(int id)
         {
-            return _context.Movies.Any(e => e.Id == id);
+            return _context.Users.Any(e => e.Id == id);
         }
     }
 }
