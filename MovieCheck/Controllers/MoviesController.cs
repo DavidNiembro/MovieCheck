@@ -41,7 +41,8 @@ namespace MovieCheck.Controllers
             {
                 return NotFound();
             }
-
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", movies.CategoryId);
+            ViewData["RatingId"] = new SelectList(_context.Ratings, "Id", "Name", movies.RatingId);
             return View(movies);
         }
 
@@ -64,6 +65,7 @@ namespace MovieCheck.Controllers
             {
                 _context.Add(movies);
                 await _context.SaveChangesAsync();
+                TempData["flashMessage"] = movies.Title;
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", movies.CategoryId);
@@ -86,7 +88,6 @@ namespace MovieCheck.Controllers
             }
             ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", movies.CategoryId);
             ViewData["RatingId"] = new SelectList(_context.Ratings, "Id", "Name", movies.RatingId);
-            TempData["Name"] = "Test data";
             return View(movies);
         }
 
@@ -120,6 +121,7 @@ namespace MovieCheck.Controllers
                         throw;
                     }
                 }
+                TempData["flashMessage"] = movies.Title;
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", movies.CategoryId);

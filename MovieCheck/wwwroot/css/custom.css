@@ -1,0 +1,21 @@
+tr {
+    height:70px;
+}
+td {
+    vertical-align: middle !important
+}
+
+#details{
+    display:block
+}
+#edit {
+    display:none
+}
+
+#detailsButton {
+    display: block
+}
+
+#editButton {
+    display: none
+}

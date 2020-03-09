@@ -1,4 +1,4 @@
-
+﻿
 function change() {
     if ($("#edit").css("display") == "block") {
 

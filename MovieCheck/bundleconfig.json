@@ -1,6 +1,10 @@
 [
   {
     "outputFileName": "wwwroot/js/index.js",
-    "inputFiles": ["js/index.js"]
+    "inputFiles": [ "js/index.js" ]
+  },
+  {
+    "outputFileName": "wwwroot/css/custom.css",
+    "inputFiles": [ "css/custom.css" ]
   }
 ]

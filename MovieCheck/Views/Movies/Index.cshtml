@@ -6,23 +6,12 @@
 }
 
 
-@{
-    var name = "";
-    if (TempData.Peek("newName") != null)
-    {
-        name = TempData["newName"] as String;
-    }
-}
-
-
-@Html.Display(name)
-
 <h1>Index</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
+<table class="table table-hover">
     <thead>
         <tr>
             <th>
@@ -34,15 +23,14 @@
             <th>
                 @Html.DisplayNameFor(model => model.Rating)
             </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
 
-            <tr>
-                <td>
+            <tr onclick="location.href = '@Url.Action("Details", "Movies", new { id=item.Id })'">
+                <td >
                     @Html.DisplayFor(modelItem => item.Title)
                 </td>
                 <td>
@@ -50,10 +38,6 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Rating.Name)
-                </td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                 </td>
             </tr>
         }
